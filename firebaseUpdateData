@@ -1,0 +1,25 @@
+GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+Map<String, Object> updates = new HashMap<String,Object>();
+
+updates.put("gender", gender);
+updates.put("lifeStyle", activity_type);
+updates.put("weightGoal", weight_goal_type);
+updates.put("duration", duration);
+updates.put("durationType", workout_duration);
+updates.put("totalCaloriesPerDay", CaloriesPerDay.getText().toString());
+updates.put("targetWeight", targetWeight);
+
+ref.child("users").child(account.getId()).updateChildren(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
+    @Override
+    public void onSuccess(Void aVoid) {
+        Toast.makeText(getApplicationContext(), "User Info Update Success!", Toast.LENGTH_SHORT).show();
+    }
+}).addOnFailureListener(new OnFailureListener() {
+    @Override
+    public void onFailure(@NonNull Exception e) {
+        // Write failed
+        Toast.makeText(getApplicationContext(), "User Info Update Failed!", Toast.LENGTH_SHORT).show();
+    }
+});
